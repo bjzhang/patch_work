@@ -1,0 +1,1 @@
+git send-email --no-chain-reply-to --annotate --to linux-kernel@vger.kernel.org --cc y2038@lists.linaro.org --cc gregkh@linuxfoundation.org -cc arnd@arndb.de --cc sudipm.mukherjee@gmail.com --cc broonie@kernel.org *.patch

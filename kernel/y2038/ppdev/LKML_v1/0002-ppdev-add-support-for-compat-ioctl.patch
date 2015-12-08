@@ -1,0 +1,47 @@
+From 54f7b622f84fc9a5563793b8059c6b8fd339ba58 Mon Sep 17 00:00:00 2001
+From: Bamvor Jian Zhang <bamvor.zhangjian@linaro.org>
+Date: Mon, 16 Nov 2015 07:31:13 +0800
+Subject: [PATCH 2/2] ppdev: add support for compat ioctl
+
+The arg of ioctl in ppdev is the pointer of integer except the
+timeval in PPSETTIME, PPGETTIME. Different size of timeval
+is already supported by the previous patches. So, it is safe
+to add compat support.
+
+Signed-off-by: Bamvor Jian Zhang <bamvor.zhangjian@linaro.org>
+---
+ drivers/char/ppdev.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/char/ppdev.c b/drivers/char/ppdev.c
+index 19a4d6e..7390166 100644
+--- a/drivers/char/ppdev.c
++++ b/drivers/char/ppdev.c
+@@ -670,6 +670,14 @@ static long pp_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 	return ret;
+ }
+ 
++#ifdef CONFIG_COMPAT
++static long pp_compat_ioctl(struct file *file, unsigned int cmd,
++		unsigned long arg)
++{
++	return pp_ioctl(file, cmd, (unsigned long)compat_ptr(arg));
++}
++#endif
++
+ static int pp_open (struct inode * inode, struct file * file)
+ {
+ 	unsigned int minor = iminor(inode);
+@@ -779,6 +787,9 @@ static const struct file_operations pp_fops = {
+ 	.write		= pp_write,
+ 	.poll		= pp_poll,
+ 	.unlocked_ioctl	= pp_ioctl,
++#ifdef CONFIG_COMPAT
++	.compat_ioctl   = pp_compat_ioctl,
++#endif
+ 	.open		= pp_open,
+ 	.release	= pp_release,
+ };
+-- 
+2.1.4
+
