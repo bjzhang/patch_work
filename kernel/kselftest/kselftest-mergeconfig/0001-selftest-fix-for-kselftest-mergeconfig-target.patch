@@ -1,0 +1,32 @@
+From 0c9e64d179d5942c2bd6cfeddce7873db4440e81 Mon Sep 17 00:00:00 2001
+From: Bamvor Jian Zhang <bamvor.zhangjian@linaro.org>
+Date: Tue, 8 Dec 2015 22:00:53 +0800
+Subject: [PATCH] selftest: fix for kselftest-mergeconfig target
+
+The kselftest-mergeconfig target is broken when KBUILD_OUTPUT is not
+empty. This commit fix it by using the correct $(objtree).
+
+Signed-off-by: Bamvor Jian Zhang <bamvor.zhangjian@linaro.org>
+---
+ scripts/kconfig/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/kconfig/Makefile b/scripts/kconfig/Makefile
+index 5896092..2694638 100644
+--- a/scripts/kconfig/Makefile
++++ b/scripts/kconfig/Makefile
+@@ -128,9 +128,9 @@ tinyconfig:
+ 
+ PHONY += kselftest-mergeconfig
+ kselftest-mergeconfig: $(obj)/conf
+-	$(if $(wildcard $(srctree)/.config),, $(error No .config exists, config your kernel first!))
++	$(if $(wildcard $(objtree)/.config),, $(error No .config exists, config your kernel first!))
+ 	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
+-		-m -O $(objtree) $(srctree)/.config \
++		-m $(objtree)/.config \
+ 		$(srctree)/tools/testing/selftests/*/config
+ 	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
+ 
+-- 
+2.1.4
+
