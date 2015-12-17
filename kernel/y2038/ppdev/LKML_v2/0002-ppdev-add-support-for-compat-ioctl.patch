@@ -1,0 +1,55 @@
+From 994e859a362f6d259e03906dfadfbde5e11fffdf Mon Sep 17 00:00:00 2001
+From: Bamvor Jian Zhang <bamvor.zhangjian@linaro.org>
+Date: Wed, 16 Dec 2015 17:32:13 +0800
+Subject: [PATCH v2 2/2] ppdev: add support for compat ioctl
+
+The arg of ioctl in ppdev is the pointer of integer except the
+timeval in PPSETTIME, PPGETTIME. Different size of timeval
+is already supported by the previous patches. So, it is safe
+to add compat support.
+
+Signed-off-by: Bamvor Jian Zhang <bamvor.zhangjian@linaro.org>
+---
+ drivers/char/ppdev.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/drivers/char/ppdev.c b/drivers/char/ppdev.c
+index 19a4d6e..31bc7b7 100644
+--- a/drivers/char/ppdev.c
++++ b/drivers/char/ppdev.c
+@@ -69,6 +69,7 @@
+ #include <linux/ppdev.h>
+ #include <linux/mutex.h>
+ #include <linux/uaccess.h>
++#include <linux/compat.h>
+ 
+ #define PP_VERSION "ppdev: user-space parallel port driver"
+ #define CHRDEV "ppdev"
+@@ -670,6 +671,14 @@ static long pp_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 	return ret;
+ }
+ 
++#ifdef CONFIG_COMPAT
++static long pp_compat_ioctl(struct file *file, unsigned int cmd,
++		unsigned long arg)
++{
++	return pp_ioctl(file, cmd, (unsigned long)compat_ptr(arg));
++}
++#endif
++
+ static int pp_open (struct inode * inode, struct file * file)
+ {
+ 	unsigned int minor = iminor(inode);
+@@ -779,6 +788,9 @@ static const struct file_operations pp_fops = {
+ 	.write		= pp_write,
+ 	.poll		= pp_poll,
+ 	.unlocked_ioctl	= pp_ioctl,
++#ifdef CONFIG_COMPAT
++	.compat_ioctl   = pp_compat_ioctl,
++#endif
+ 	.open		= pp_open,
+ 	.release	= pp_release,
+ };
+-- 
+2.1.4
+
