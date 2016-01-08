@@ -1,0 +1,2 @@
+git send-email --no-chain-reply-to --annotate --to linux-api@vger.kernel.org --cc linux-kernel@vger.kernel.org --cc linux-kbuild@vger.kernel.org --cc shuahkh@osg.samsung.com --cc yann.morin.1998@free.fr --cc khilman@linaro.org --cc tyler.baker@linaro.org --cc broonie@kernel.org --cc mpe@ellerman.id.au --cc dvhart@infradead.org --cc mmarek@suse.com 000*.patch
+
