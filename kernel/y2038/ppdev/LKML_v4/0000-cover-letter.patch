@@ -1,0 +1,45 @@
+From e90f0dcff1cc01b387e828661c304a73e89e9b69 Mon Sep 17 00:00:00 2001
+From: Bamvor Jian Zhang <bamvor.zhangjian@linaro.org>
+Date: Fri, 8 Jan 2016 15:44:09 +0800
+Subject: [PATCH v4 0/3] Convert ppdev to y2038 safe
+
+These series of patches try to convert parport device(ppdev) to
+y2038 safe, and support y2038 safe and unsafe application at the
+same time. The first two version is here[1][2][3].
+
+An y2038 safe application/kernel use 64bit time_t(aka time64_t)
+to avoid 32-bit time types broken in the year 2038. Given that
+some time relative struct(e.g. timeval in ppdev.c) is mainly the
+offset of the real time, the old 32bit time_t in such application
+is safe. We need to handle the 32bit time_t and 64bit time_t
+application at the same time. My approach here is handle them as
+different ioctl command for different size of timeval.
+
+Build successful on arm64, arm and x86_64 with C=1.
+
+Changes since v3:
+1.  Remove the useless compat ioctl in fs/compat_ioctl.c for
+    parport device.
+
+Changes since v2:
+1.  Fix the wrong parameter in copy_to_user.
+
+Changes since v1:
+1.  Fix the warning when build against x86_64.
+
+[1] https://lkml.org/lkml/2015/12/9/32
+[2] https://lkml.org/lkml/2015/12/17/111
+[3] http://www.spinics.net/lists/y2038/msg01059.html
+
+Bamvor Jian Zhang (3):
+  ppdev: convert to y2038 safe
+  ppdev: add support for compat ioctl
+  fs/compat: remove useless compat ioctl for parport device
+
+ drivers/char/ppdev.c | 87 ++++++++++++++++++++++++++++++++++++++++------------
+ fs/compat_ioctl.c    | 22 -------------
+ 2 files changed, 67 insertions(+), 42 deletions(-)
+
+-- 
+2.1.4
+

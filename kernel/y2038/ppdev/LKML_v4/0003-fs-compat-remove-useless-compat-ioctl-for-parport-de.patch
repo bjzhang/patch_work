@@ -1,0 +1,53 @@
+From e90f0dcff1cc01b387e828661c304a73e89e9b69 Mon Sep 17 00:00:00 2001
+From: Bamvor Jian Zhang <bamvor.zhangjian@linaro.org>
+Date: Wed, 6 Jan 2016 20:14:20 +0800
+Subject: [PATCH v4 3/3] fs/compat: remove useless compat ioctl for parport
+ device
+
+Compat ioctl is already introduced in drivers/char/ppdev.c in order to
+fix y2038 issue for PP[GS]ETTIME. There is no need to define these
+here.
+
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Tested-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Signed-off-by: Bamvor Jian Zhang <bamvor.zhangjian@linaro.org>
+---
+ fs/compat_ioctl.c | 22 ----------------------
+ 1 file changed, 22 deletions(-)
+
+diff --git a/fs/compat_ioctl.c b/fs/compat_ioctl.c
+index eab31e7..1f2ae50 100644
+--- a/fs/compat_ioctl.c
++++ b/fs/compat_ioctl.c
+@@ -1019,28 +1019,6 @@ COMPATIBLE_IOCTL(PPPIOCGL2TPSTATS)
+ /* PPPOX */
+ COMPATIBLE_IOCTL(PPPOEIOCSFWD)
+ COMPATIBLE_IOCTL(PPPOEIOCDFWD)
+-/* ppdev */
+-COMPATIBLE_IOCTL(PPSETMODE)
+-COMPATIBLE_IOCTL(PPRSTATUS)
+-COMPATIBLE_IOCTL(PPRCONTROL)
+-COMPATIBLE_IOCTL(PPWCONTROL)
+-COMPATIBLE_IOCTL(PPFCONTROL)
+-COMPATIBLE_IOCTL(PPRDATA)
+-COMPATIBLE_IOCTL(PPWDATA)
+-COMPATIBLE_IOCTL(PPCLAIM)
+-COMPATIBLE_IOCTL(PPRELEASE)
+-COMPATIBLE_IOCTL(PPYIELD)
+-COMPATIBLE_IOCTL(PPEXCL)
+-COMPATIBLE_IOCTL(PPDATADIR)
+-COMPATIBLE_IOCTL(PPNEGOT)
+-COMPATIBLE_IOCTL(PPWCTLONIRQ)
+-COMPATIBLE_IOCTL(PPCLRIRQ)
+-COMPATIBLE_IOCTL(PPSETPHASE)
+-COMPATIBLE_IOCTL(PPGETMODES)
+-COMPATIBLE_IOCTL(PPGETMODE)
+-COMPATIBLE_IOCTL(PPGETPHASE)
+-COMPATIBLE_IOCTL(PPGETFLAGS)
+-COMPATIBLE_IOCTL(PPSETFLAGS)
+ /* Big A */
+ /* sparc only */
+ /* Big Q for sound/OSS */
+-- 
+2.1.4
+
