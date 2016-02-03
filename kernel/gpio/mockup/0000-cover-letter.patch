@@ -1,0 +1,56 @@
+From 7a96fed32b3279c6737dc7dd26bf283606a4f5d6 Mon Sep 17 00:00:00 2001
+From: Bamvor Jian Zhang <bamvor.zhangjian@linaro.org>
+Date: Wed, 3 Feb 2016 20:03:08 +0800
+Subject: [PATCH v2 0/3] Add gpio test framework
+
+These series of patches try to add support for testing of gpio
+subsystem based on the proposal from Linus Walleij. The first version
+is here[1].
+
+The basic idea is implement a virtual gpio device(gpio-mockup) base
+on gpiolib. Tester could test the gpiolib by manipulating gpio-mockup
+device through sysfs or char device and check the result from debugfs.
+Reference the following figure:
+
+   sysfs/char device  debugfs
+     |                   |
+  gpiolib----------------/
+     |
+ gpio-mockup
+
+Currently, this test script will use sysfs interface by default. I
+plan set char device as default after it upstreamed.
+
+In order to avoid conflict with other gpio exist in the system,
+only dynamic allocation is tested by default. User could pass -f to
+do full test.
+
+[1] http://comments.gmane.org/gmane.linux.kernel.gpio/11883
+
+Changes since v1:
+1.  Change value of gpio to boolean.
+2.  Only test dynamic allocation by default.
+
+Bamvor Jian Zhang (3):
+  gpio/mockup: add virtual gpio device
+  selftest/gpio: add gpio test case
+  gpio: MAINTAINERS: Add an entry for GPIO mockup driver
+
+ Documentation/kernel-parameters.txt               |   4 +
+ MAINTAINERS                                       |   7 +
+ drivers/gpio/Kconfig                              |  12 ++
+ drivers/gpio/Makefile                             |   1 +
+ drivers/gpio/gpio-mockup.c                        | 231 ++++++++++++++++++++++
+ tools/testing/selftests/Makefile                  |   1 +
+ tools/testing/selftests/gpio/Makefile             |  10 +
+ tools/testing/selftests/gpio/gpio-mockup-sysfs.sh | 117 +++++++++++
+ tools/testing/selftests/gpio/gpio-mockup.sh       | 198 +++++++++++++++++++
+ 9 files changed, 581 insertions(+)
+ create mode 100644 drivers/gpio/gpio-mockup.c
+ create mode 100644 tools/testing/selftests/gpio/Makefile
+ create mode 100644 tools/testing/selftests/gpio/gpio-mockup-sysfs.sh
+ create mode 100755 tools/testing/selftests/gpio/gpio-mockup.sh
+
+-- 
+2.1.4
+

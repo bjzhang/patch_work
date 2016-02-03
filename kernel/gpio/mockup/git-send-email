@@ -1,0 +1,1 @@
+git send-email --no-chain-reply-to --annotate --to linux-gpio@vger.kernel.org --cc linus.walleij@linaro.org --cc broonie@kernel.org 000[0-3]*.patch
