@@ -1,1 +1,0 @@
-git send-email --no-chain-reply-to --annotate --to linux-gpio@vger.kernel.org --cc linus.walleij@linaro.org --cc broonie@kernel.org --cc julien.grossholtz@savoirfairelinux.com --cc arnd@arndb.de 0001-gpiolib-rewrite-gpiochip_add_to_list.patch

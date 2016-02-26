@@ -1,0 +1,35 @@
+From e5bc8fe1074835c523900602f5e1f31a561b1960 Mon Sep 17 00:00:00 2001
+From: Bamvor Jian Zhang <bamvor.zhangjian@linaro.org>
+Date: Fri, 26 Feb 2016 21:31:11 +0800
+Subject: [PATCH] tools: gpio: add kernel headers in CFLAGS
+
+Gpio tools require linux/gpio.h which may be only exist in kernel
+source code in a cross compile environment.
+
+Add such header to CFLAGS to avoid compiling failure.
+
+Signed-off-by: Bamvor Jian Zhang <bamvor.zhangjian@linaro.org>
+---
+ tools/gpio/Makefile | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/tools/gpio/Makefile b/tools/gpio/Makefile
+index 4d198d5..6b8804f 100644
+--- a/tools/gpio/Makefile
++++ b/tools/gpio/Makefile
+@@ -1,5 +1,11 @@
++ifneq ($(INSTALL_HDR_PATH),)
++KERNEL_HEADERS := $(INSTALL_HDR_PATH)/include
++else
++KERNEL_HEADERS ?= $(abspath ../../usr/include)
++endif
++
+ CC = $(CROSS_COMPILE)gcc
+-CFLAGS += -Wall -g -D_GNU_SOURCE
++CFLAGS += -Wall -g -D_GNU_SOURCE -I $(KERNEL_HEADERS)
+ 
+ all: lsgpio
+ 
+-- 
+2.6.2
+

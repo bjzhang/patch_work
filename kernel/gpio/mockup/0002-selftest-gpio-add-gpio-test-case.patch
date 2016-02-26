@@ -1,4 +1,4 @@
-From ee3ad7923b8c5c091e37fc44a64430168391d6ee Mon Sep 17 00:00:00 2001
+From 9f55a00e6183d3bea36821d093646df96153d170 Mon Sep 17 00:00:00 2001
 From: Bamvor Jian Zhang <bamvor.zhangjian@linaro.org>
 Date: Wed, 3 Feb 2016 18:05:07 +0800
 Subject: [PATCH v2 2/3] selftest/gpio: add gpio test case

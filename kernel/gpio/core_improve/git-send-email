@@ -1,0 +1,5 @@
+#!/bin/bash
+
+if [ X"$1" != X ] && [ -f $1 ]; then
+	git send-email --no-chain-reply-to --annotate --to linux-gpio@vger.kernel.org --cc linus.walleij@linaro.org --cc broonie@kernel.org $1
+fi
