@@ -1,0 +1,27 @@
+From 26bd9d5e5a55b4f245a285aac02ff353b19576e5 Mon Sep 17 00:00:00 2001
+From: Bamvor Jian Zhang <bamvor.zhangjian@linaro.org>
+Date: Mon, 27 Mar 2017 13:21:25 +0800
+Subject: [PATCH 0/2] selftests: fix for KBUILD_OUTPUT
+
+These patches fix the two compile failures in x86 and net subnet
+repectively. Test the folowing build method successful:
+
+make -C tools/testing/selftests TARGETS=xxx
+make -C tools/testing/selftests TARGETS=xxx clean
+make -C tools/testing/selftests/xxx
+make -C tools/testing/selftests/xxx clean
+make ARCH=$ARCH CROSS_COMPILE=$CROSS_COMPILE -C tools/testing/selftests TARGETS=xxx
+make ARCH=$ARCH CROSS_COMPILE=$CROSS_COMPILE -C tools/testing/selftests TARGETS=xxx clean
+
+Bamvor Jian Zhang (2):
+  selftests: fix the broken individual test for x86
+  selftests: net:  support KBUILD_OUTPUT for reuseport_bpf_numa
+
+ Documentation/kselftest.txt          |  6 ++++++
+ tools/testing/selftests/net/Makefile |  2 +-
+ tools/testing/selftests/x86/Makefile | 23 ++++++++++++++---------
+ 3 files changed, 21 insertions(+), 10 deletions(-)
+
+-- 
+1.9.1
+

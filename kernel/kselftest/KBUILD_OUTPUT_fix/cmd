@@ -1,0 +1,1 @@
+git send-email --no-chain-reply-to --annotate --to luto@amacapital.net --to shuahkh@osg.samsung.com --cc mpe@ellerman.id.au --cc linux-api@vger.kernel.org --cc linux-kernel@vger.kernel.org --cc khilman@kernel.org --cc broonie@kernel.org --cc bamvor.zhangjian@huawei.com --cc bamvor.zhangjian@linaro.org *.patch

@@ -1,0 +1,30 @@
+From 7ecc4cef5728e2cc233bb9669231d7d549e84ac0 Mon Sep 17 00:00:00 2001
+From: Bamvor Jian Zhang <bamvor.zhangjian@linaro.org>
+Date: Thu, 23 Mar 2017 00:18:39 +0800
+Subject: [PATCH 2/2] selftests: net: support KBUILD_OUTPUT for
+ reuseport_bpf_numa
+
+reuseport_bpf_numa is not supported by KBUILD_OUTPUT machanism in net
+subset. This patch fix this by adding $(OUTPUT) before the target.
+
+Signed-off-by: Bamvor Jian Zhang <bamvor.zhangjian@linaro.org>
+---
+ tools/testing/selftests/net/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+index fbfe5d0..cc9425e 100644
+--- a/tools/testing/selftests/net/Makefile
++++ b/tools/testing/selftests/net/Makefile
+@@ -3,7 +3,7 @@
+ CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g
+ CFLAGS += -I../../../../usr/include/
+ 
+-reuseport_bpf_numa: LDFLAGS += -lnuma
++$(OUTPUT)/reuseport_bpf_numa: LDFLAGS += -lnuma
+ 
+ TEST_PROGS := run_netsocktests run_afpackettests test_bpf.sh
+ TEST_GEN_FILES =  socket
+-- 
+1.9.1
+
